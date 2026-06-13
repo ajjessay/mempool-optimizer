@@ -33,9 +33,9 @@ export function calculateTiers(payload: MempoolBlocksPayload): FeeTiers {
   const low = lastBlock ? Math.min(...lastBlock.feeRange) : Math.round(high * 0.3)
 
   return {
-    high: Math.max(high, 1),
-    medium: Math.max(medium, 1),
-    low: Math.max(low, 1),
+    high:   Math.max(Math.round(high), 1),
+    medium: Math.max(Math.round(medium), 1),
+    low:    Math.max(Math.round(low), 1),
     timestamp: Date.now()
   }
 }

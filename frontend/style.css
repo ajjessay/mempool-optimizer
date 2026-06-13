@@ -1,0 +1,199 @@
+/* ── Reset & Base ────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:         #0d1117;
+  --surface:    #161b22;
+  --border:     #30363d;
+  --text:       #e6edf3;
+  --muted:      #8b949e;
+  --high:       #f85149;
+  --medium:     #f0883e;
+  --low:        #3fb950;
+  --accent:     #58a6ff;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  padding-bottom: 3rem;
+}
+
+/* ── Header ──────────────────────────────────────────── */
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 1.5rem 2rem;
+  background: var(--surface);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin-top: 0.35rem;
+}
+
+/* ── Status Pill ─────────────────────────────────────── */
+.status-pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px;
+  background: var(--border);
+  color: var(--muted);
+  transition: all 0.3s ease;
+}
+
+.status-pill.live {
+  background: rgba(63, 185, 80, 0.15);
+  color: var(--low);
+  border: 1px solid rgba(63, 185, 80, 0.3);
+}
+
+.status-pill.error {
+  background: rgba(248, 81, 73, 0.15);
+  color: var(--high);
+  border: 1px solid rgba(248, 81, 73, 0.3);
+}
+
+/* ── Main Layout ─────────────────────────────────────── */
+main {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+/* ── Fee Cards ───────────────────────────────────────── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 12px 12px 0 0;
+}
+
+.card.high::before  { background: var(--high); }
+.card.medium::before { background: var(--medium); }
+.card.low::before   { background: var(--low); }
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.card-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+.card-fee {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.2rem;
+  transition: all 0.4s ease;
+}
+
+.card.high   .card-fee { color: var(--high); }
+.card.medium .card-fee { color: var(--medium); }
+.card.low    .card-fee { color: var(--low); }
+
+.card-unit {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+.card-desc {
+  font-size: 0.8rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* ── Chart Section ───────────────────────────────────── */
+.chart-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.chart-header h2 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.chart-note {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 260px;
+}
+
+/* ── Last Updated ────────────────────────────────────── */
+.last-updated {
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* ── Pulse animation on new data ─────────────────────── */
+@keyframes pulse {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.updating {
+  animation: pulse 0.5s ease;
+}

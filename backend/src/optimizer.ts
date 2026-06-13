@@ -1,26 +1,36 @@
-import type { FeeEstimatesPayload } from './stream.js'
-
-// ─── Types ────────────────────────────────────────────────────────────────────
+import type { MempoolBlock, MempoolBlocksPayload } from './stream.js'
 
 export interface FeeTiers {
-  high: number    // sat/vB — next block (~10 mins)
-  medium: number  // sat/vB — within 3 blocks (~30 mins)
-  low: number     // sat/vB — within 6 blocks (~1 hour)
+  high: number
+  medium: number
+  low: number
   timestamp: number
 }
 
-// ─── Main Export ──────────────────────────────────────────────────────────────
+function median(values: number[]): number {
+  if (values.length === 0) return 0
+  const sorted = [...values].sort((a, b) => a - b)
+  const mid = Math.floor(sorted.length / 2)
+  return sorted.length % 2 !== 0
+    ? sorted[mid]
+    : Math.round((sorted[mid - 1] + sorted[mid]) / 2)
+}
 
-export function calculateTiers(payload: FeeEstimatesPayload): FeeTiers {
-  const fees = payload.feeEstimates
+function getBlock(blocks: MempoolBlock[], index: number): MempoolBlock | null {
+  return blocks[index] ?? null
+}
 
-  // Blockstream keys are "number of blocks to wait"
-  // We pick the three most useful confirmation targets
-  // Math.ceil ensures we never return a decimal or zero
+export function calculateTiers(payload: MempoolBlocksPayload): FeeTiers {
+  const blocks = payload.mempoolBlocks
 
-  const high = Math.ceil(fees['1'] ?? fees['2'] ?? 10)
-  const medium = Math.ceil(fees['3'] ?? fees['6'] ?? 5)
-  const low = Math.ceil(fees['6'] ?? fees['12'] ?? 2)
+  const block0 = getBlock(blocks, 0)
+  const high = block0 ? median(block0.feeRange) : 0
+
+  const block1 = getBlock(blocks, 1) ?? getBlock(blocks, 2)
+  const medium = block1 ? median(block1.feeRange) : Math.round(high * 0.6)
+
+  const lastBlock = blocks[blocks.length - 1] ?? null
+  const low = lastBlock ? Math.min(...lastBlock.feeRange) : Math.round(high * 0.3)
 
   return {
     high: Math.max(high, 1),

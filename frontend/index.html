@@ -10,57 +10,111 @@
 
   <header>
     <div class="header-inner">
-      <h1>⛓ Mempool Optimizer</h1>
-      <div class="status-pill" id="status">Connecting...</div>
+      <div class="header-left">
+        <div class="logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+        </div>
+        <div>
+          <h1>Mempool Optimizer</h1>
+          <p class="subtitle">Live Bitcoin transaction fee tracker — sat/vB</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="heartbeat-wrap">
+          <span class="heartbeat-label">Last update</span>
+          <span class="heartbeat-timer" id="heartbeat">—</span>
+        </div>
+        <div class="status-pill" id="status">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="status-text">Connecting...</span>
+        </div>
+      </div>
     </div>
-    <p class="subtitle">Live Bitcoin transaction fee tracker — sat/vB</p>
   </header>
+
+  <div class="congestion-banner" id="congestion-banner">
+    <span class="congestion-icon" id="congestion-icon">⬤</span>
+    <span id="congestion-text">Waiting for data...</span>
+  </div>
 
   <main>
 
-    <!-- ── Fee Tier Cards ─────────────────────────────── -->
     <section class="cards">
 
       <div class="card high">
-        <div class="card-label">🚀 High Priority</div>
+        <div class="card-top">
+          <div class="card-label">High Priority</div>
+          <div class="card-arrow" id="arrow-high">—</div>
+        </div>
         <div class="card-fee" id="fee-high">—</div>
         <div class="card-unit">sat/vB</div>
-        <div class="card-desc">Next block (~10 min)</div>
+        <div class="card-desc">Next block · ~10 min</div>
       </div>
 
       <div class="card medium">
-        <div class="card-label">🚌 Medium Priority</div>
+        <div class="card-top">
+          <div class="card-label">Medium Priority</div>
+          <div class="card-arrow" id="arrow-medium">—</div>
+        </div>
         <div class="card-fee" id="fee-medium">—</div>
         <div class="card-unit">sat/vB</div>
-        <div class="card-desc">Within 3 blocks (~30 min)</div>
+        <div class="card-desc">Within 3 blocks · ~30 min</div>
       </div>
 
       <div class="card low">
-        <div class="card-label">🐢 Low Priority</div>
+        <div class="card-top">
+          <div class="card-label">Low Priority</div>
+          <div class="card-arrow" id="arrow-low">—</div>
+        </div>
         <div class="card-fee" id="fee-low">—</div>
         <div class="card-unit">sat/vB</div>
-        <div class="card-desc">Within 6 blocks (~1 hour)</div>
+        <div class="card-desc">Within 6 blocks · ~1 hour</div>
       </div>
 
     </section>
 
-    <!-- ── Live Chart ─────────────────────────────────── -->
     <section class="chart-section">
       <div class="chart-header">
-        <h2>Fee Rate History</h2>
-        <span class="chart-note">Last 30 updates</span>
+        <div>
+          <h2>Fee Rate History</h2>
+          <span class="chart-note">Rolling 30 updates</span>
+        </div>
+        <div class="chart-legend">
+          <span class="legend-dot high-dot"></span><span>High</span>
+          <span class="legend-dot medium-dot"></span><span>Medium</span>
+          <span class="legend-dot low-dot"></span><span>Low</span>
+        </div>
       </div>
       <div class="chart-wrapper">
         <canvas id="feeChart"></canvas>
       </div>
     </section>
 
-    <!-- ── Last Updated ───────────────────────────────── -->
-    <div class="last-updated">
-      Last updated: <span id="last-updated">—</span>
-    </div>
+    <section class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Session High</div>
+        <div class="stat-value" id="stat-session-high">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Session Low</div>
+        <div class="stat-value" id="stat-session-low">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Data Points</div>
+        <div class="stat-value" id="stat-updates">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Fee Spread</div>
+        <div class="stat-value" id="stat-spread">—</div>
+      </div>
+    </section>
 
   </main>
+
+  <footer>
+    <span>Powered by <a href="https://mempool.space" target="_blank">mempool.space</a></span>
+    <span id="last-updated">—</span>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="main.js"></script>
